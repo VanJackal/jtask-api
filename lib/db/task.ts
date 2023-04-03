@@ -42,7 +42,43 @@ const TaskSchema = new Schema<ITask>({
 
 const Task = model<ITask>('task',TaskSchema)
 
+/**
+ * check an input task object and return null if it is invalid, return a valid strict ITask object (no added fields)
+ * @param task ITask input
+ */
+function validateTask(task):ITask {
+    if (typeof task.title === "string"
+        && typeof task.state === "number"
+        && Object.values(State).includes(task.state) // check task.state is a valid state
+        && (typeof task.description === "undefined" || typeof task.description === "string")
+        && (typeof task.dueDate === "undefined" || task.dueDate instanceof Date)
+        && (typeof task.tags === "undefined" || task.tags instanceof Array
+            && task.tags.every( (tag) => {
+                return typeof tag === "string"
+            }))
+        && (typeof task.alerts === "undefined" || task.alerts instanceof Array
+            && task.alerts.every((alert) => {
+                return alert instanceof Date
+            }))
+        && (typeof task.parent == "undefined" || task.parent instanceof Types.ObjectId)
+    ) {
+        return { // return object without any extra fields
+            alerts: task.alerts,
+            description: task.description,
+            dueDate: task.dueDate,
+            parent: task.parent,
+            state: task.state,
+            tags: task.tags,
+            title:task.title
+        }
+    } else {
+        return null;
+    }
+}
+
 export {
     Task,
-    ITask
+    ITask,
+    State,
+    validateTask
 }

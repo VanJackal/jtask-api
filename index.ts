@@ -1,6 +1,6 @@
 import express = require('express')
 import {logger} from 'logging'
-
+import {router} from './routes'
 
 const app = express()
 
@@ -20,6 +20,8 @@ app.use('*', (req, res, next) => { // log<trace> all requests
     logger.trace(`request: ${req.method} ${req.originalUrl}`)
     next()
 })
+
+app.use('/api/',router)
 
 app.use((err,req,res,next) => { // catch & log errors
     logger.error(err)
