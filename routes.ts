@@ -20,7 +20,6 @@ router.post('/task',async (req,res) => {
     logger.trace(`[${"USER PLACEHOLDER"}] - Task Created:\n\t${JSON.stringify(task)}`) // TODO replace with user
     res.status(201)
     await res.json(task)
-    res.send()
 })
 
 router.get('/tasks',async (req,res) => {
@@ -28,7 +27,6 @@ router.get('/tasks',async (req,res) => {
 
     const tasks = await Task.find()
     await res.json(tasks);
-    res.send()
 })
 
 /**
@@ -51,7 +49,6 @@ router.all('/tasks/:id', async (req,res,next) => {
 router.get('/tasks/:id',async (req,res) => {
     logger.debug(`[${"USER PLACEHOLDER"}] - Getting Task[${req.params.id}]`) // TODO replace with user
     await res.json(await Task.findById(req.params.id));
-    res.send()
 })
 
 router.patch('/tasks/:id',async (req,res) => {
@@ -59,14 +56,12 @@ router.patch('/tasks/:id',async (req,res) => {
     logger.trace(`\tUpdate: ${JSON.stringify(req.body)}`)
     const task = await Task.findByIdAndUpdate(req.params.id,req.body,{runValidators:true})
     await res.json(task)
-    res.send()
 })
 
 router.delete('/tasks/:id',async (req,res) => {
     logger.debug(`[${"USER PLACEHOLDER"}] - Deleting Task[${req.params.id}]`) // TODO replace with user
     const task = await Task.findByIdAndDelete(req.params.id)
     await res.json(task)
-    res.send()
 })
 
 export {
