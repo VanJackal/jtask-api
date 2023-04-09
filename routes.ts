@@ -16,10 +16,10 @@ router.post('/task',async (req,res) => {
         return
     }
 
-    await Task.create(task);
+    let created = await Task.create(task);
     logger.trace(`[${"USER PLACEHOLDER"}] - Task Created:\n\t${JSON.stringify(task)}`) // TODO replace with user
     res.status(201)
-    await res.json(task)
+    await res.json(created)
 })
 
 router.get('/tasks',async (req,res) => {
