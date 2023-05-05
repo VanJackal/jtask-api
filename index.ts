@@ -25,7 +25,9 @@ app.use('/api/',router)
 
 app.use((err,req,res,next) => { // catch & log errors
     logger.error(err)
-    res.sendStatus(500)
+    if(!res.writableEnded) {
+        res.sendStatus(500)
+    }
 })
 
 app.listen(PORT, () => { // start server
